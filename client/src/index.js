@@ -1,27 +1,33 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import { BrowserRouter, Route } from 'react-router-dom';
-import App from './components/App';
+import reduxThunk from 'redux-thunk';
 
 // components
+import App from './components/App';
 import Welcome from './components/Welcome';
 import SignUp from './components/auth/SignUp';
 import SignIn from './components/auth/SignIn';
-import Features from './components/Features';
+import SignOut from './components/auth/SignOut';
+import Feature from './components/Feature';
 
 // reducers
 import reducers from './reducers';
 
+// store
+const store = createStore(reducers, {}, applyMiddleware(reduxThunk))
+
 ReactDOM.render(
-  <Provider store={createStore(reducers, {})}>
+  <Provider store={store}>
     <BrowserRouter>
       <App>
         <Route path='/' component={Welcome} exact />
-        <Route path='/signup' component={SignUp} exact />
-        <Route path='/signin' component={SignIn} exact />
-        <Route path='/features' component={Features} exact />
+        <Route path='/signup' component={SignUp} />
+        <Route path='/signin' component={SignIn} />
+        <Route path='/signout' component={SignOut} />
+        <Route path='/feature' component={Feature} />
       </App>
     </BrowserRouter>
   </Provider>,
